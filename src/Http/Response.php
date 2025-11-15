@@ -4,14 +4,16 @@ namespace App\Http;
 
 use Exception;
 
-class Response{
+class Response
+{
     private $statusCode;
     private $headers;
     private $body;
     private $contentType;
     private $charset;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->statusCode = 200;
         $this->headers = [];
         $this->body = '';
@@ -44,31 +46,37 @@ class Response{
 
     // Méthode de récupération
 
-    public function getStatusCode(){
+    public function getStatusCode()
+    {
         return $this->statusCode;
     }
 
-    public function getBody(){
+    public function getBody()
+    {
         return $this->body;
     }
 
-    public function getHeader($name){
+    public function getHeader($name)
+    {
         return isset($this->headers[$name]) ? $this->headers[$name] : null;
     }
 
-    public function getHeaders(){
+    public function getHeaders()
+    {
         return $this->headers;
     }
 
     // Méthodes spécialisées
 
-    public function redirect($url, $statusCode = 302){
+    public function redirect($url, $statusCode = 302)
+    {
         $this->setStatusCode($statusCode);
         $this->setHeader('Location', $url);
         return $this;
     }
 
-    public function view($templatePath, $data = [], $statusCode = 200){
+    public function view($templatePath, $data = [], $statusCode = 200)
+    {
         $this->setStatusCode($statusCode);
         $fullPath = __DIR__ . '/../../templates/' . $templatePath;
         if (!file_exists($fullPath)) {
@@ -82,7 +90,8 @@ class Response{
         return $this;
     }
 
-    public function error($message, $statusCode = 500){
+    public function error($message, $statusCode = 500)
+    {
         $this->setStatusCode($statusCode);
         $this->setContentType('application/json');
         $this->setBody(json_encode([
@@ -93,7 +102,8 @@ class Response{
         return $this;
     }
 
-    public function success($message, $statusCode = 200){
+    public function success($message, $statusCode = 200)
+    {
         $this->setStatusCode($statusCode);
         $this->setContentType('application/json');
         $this->setBody(json_encode([
@@ -104,23 +114,28 @@ class Response{
         return $this;
     }
 
-    public function send(){
-        http_response_code($this->statusCode);
-        foreach ($this->headers as $name => $value) {
-            header("$name: $value");
+    public function send()
+    {
+        if (!headers_sent()) {
+            http_response_code($this->statusCode);
+            foreach ($this->headers as $name => $value) {
+                header("$name: $value");
+            }
+            header("Content-Type: $this->contentType; charset=$this->charset");
         }
-        header("Content-Type: $this->contentType; charset=$this->charset");
         echo $this->body;
         exit();
     }
 
-    public function redirectTo($url, $statusCode = 302){
+    public function redirectTo($url, $statusCode = 302)
+    {
         $this->setStatusCode($statusCode);
         $this->setHeader('Location', $url);
         $this->send();
     }
 
-    public function errorResponse($message, $statusCode = 500){
+    public function errorResponse($message, $statusCode = 500)
+    {
         $this->setStatusCode($statusCode);
         $this->setContentType('application/json');
         $this->setBody(json_encode([
@@ -129,5 +144,5 @@ class Response{
             'status_code' => $statusCode
         ]));
         $this->send();
-}
+    }
 }

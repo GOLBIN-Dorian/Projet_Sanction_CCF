@@ -26,27 +26,36 @@ try {
     $router = new Router($request, $response);
 
     // Définition des fonctions/actions
-    function action_index(Request $req, Response $res) {
+    function action_index(Request $req, Response $res)
+    {
         // page d'accueil
         $res->view('Gestions/index.php');
     }
 
-    function action_connexion(Request $req, Response $res) {
+    function action_connexion(Request $req, Response $res)
+    {
         $res->view('Gestions/connexion.php');
     }
 
-    function action_inscription(Request $req, Response $res) {
-        $res->view('Gestions/inscription.php');
+    function action_inscription(Request $req, Response $res)
+    {
+        include __DIR__ . '/../src/controllers/inscription.php';
+    }
+
+    function action_dashboard(Request $req, Response $res)
+    {
+        $res->view('Gestions/dashboard.php');
     }
 
     // Routes disponibles
-    $router->addRoute('index', 'action_index', ['GET']);
-    $router->addRoute('connexion', 'action_connexion', ['GET']);
-    $router->addRoute('inscription', 'action_inscription', ['GET']);
+    $router
+        ->addRoute('index', 'action_index', ['GET'])
+        ->addRoute('connexion', 'action_connexion', ['GET', 'POST'])
+        ->addRoute('inscription', 'action_inscription', ['GET', 'POST'])
+        ->addRoute('dashboard', 'action_dashboard', ['GET']);
 
     // Fallback: if action not found Router::handleRequest will redirect to index
     $router->handleRequest();
-
 } catch (Exception $e) {
     // Erreur fatale : renvoyer un simple message
     http_response_code(500);
