@@ -8,7 +8,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     exit();
 }
 
-require_once __DIR__ . '/../models/UserModel.php';
+require_once __DIR__ . '/../Repositories/userRepository.php';
 require_once __DIR__ . '/../config/database.php';
 
 // Initialisation des variables

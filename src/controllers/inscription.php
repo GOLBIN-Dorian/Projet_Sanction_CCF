@@ -7,7 +7,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 }
 
 require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../models/UserModel.php';
+require_once __DIR__ . '/../Repositories/userRepository.php';
 
 // Initialisation des variables
 $email = $password = $confirm_password = $prenom = $nom = "";
