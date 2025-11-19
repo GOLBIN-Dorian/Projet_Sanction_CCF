@@ -4,8 +4,16 @@
 
 // Si l'utilisateur est déjà connecté, le rediriger vers le dashboard
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    header('Location: dashboard');
+    header('Location: ');
     exit();
+}
+
+if (isset($_SESSION['loggedin'])) {
+    // Rediriger automatiquement vers la page de connexion (US2 -> US1)
+    header('Location: index.php?action=dashboard');
+    exit;
+} else {
+    $errors['general'] = "Une erreur est survenue. Veuillez réessayer plus tard.";
 }
 
 require_once __DIR__ . '/../Repositories/userRepository.php';
