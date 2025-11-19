@@ -13,7 +13,6 @@ services:
       - "3330:3306"
     volumes:
       - sio:/var/lib/mysql
-      - ./docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - sio
 
@@ -23,7 +22,7 @@ services:
     depends_on:
       - db
     environment:
-      PMA_HOST: db   # nom du service MySQL
+      PMA_HOST: db # nom du service MySQL
       UPLOAD_LIMIT: 256M
     ports:
       - "8010:80"
