@@ -2,21 +2,7 @@
 
 // Toutes les fonctions liées aux utilisateurs.
 
-/**
- * Insère un utilisateur et retourne l'id inséré ou false en cas d'erreur.
- *
- * - Hash le mot de passe avec password_hash.
- * - Utilise une requête préparée pour éviter les injections SQL.
- * - Retourne l'ID auto-incrémenté (int) si l'insertion réussit, false sinon.
- *
- * @param PDO   $connexion   Objet PDO connecté à la base.
- * @param array $utilisateur Tableau contenant au minimum :
- *                           - email (string)
- *                           - password (string, en clair)
- *                           - nom (string)
- *                           - prenom (string)
- * @return int|false ID inséré (int) ou false en cas d'erreur.
- */
+require_once __DIR__ . '/../config/database.php';
 function createUser(PDO $connexion, array $utilisateur): int|false
 {
     // Récupération des données depuis le tableau
@@ -54,13 +40,7 @@ function createUser(PDO $connexion, array $utilisateur): int|false
     }
 }
 
-/**
- * Vérifie si une adresse email existe déjà dans la table utilisateurs.
- *
- * @param PDO    $connexion Objet PDO connecté à la base.
- * @param string $email     Email à vérifier.
- * @return bool  true si l'email existe, false sinon.
- */
+
 function emailExiste(PDO $connexion, string $email): bool
 {
     $requete = "SELECT id FROM utilisateurs WHERE email = :email";

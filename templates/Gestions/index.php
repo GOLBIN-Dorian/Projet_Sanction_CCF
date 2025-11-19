@@ -1,4 +1,13 @@
 <?php
+if (!empty($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+  header('Location: index.php?action=dashboard');
+  exit;
+}
+?>
+
+
+
+<?php
 $title = 'Gestion des Sanctions — Accueil';
 ob_start();
 ?>
@@ -60,7 +69,7 @@ ob_start();
         </div>
       </div>
       <!-- Feature 3 -->
-      <a class="flex items-start gap-4 p-4 rounded-xl hover:bg-primary-800/5 transition" href="index.php?action=dashboard">
+      <a class="flex items-start gap-4 p-4 rounded-xl hover:bg-primary-800/5 transition">
         <div class="w-12 h-12 rounded-full grid place-items-center text-lg bg-indigo-50 text-slate-700 border border-slate-200">📊</div>
         <div>
           <h4 class="font-semibold text-base mb-1">Tableau de Bord</h4>

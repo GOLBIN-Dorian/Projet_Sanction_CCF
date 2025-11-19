@@ -1,8 +1,17 @@
 <?php
 
-
 $title = 'Gestion des Sanctions — Dashboard';
 ob_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$user = $_SESSION['user'] ?? [];
+$nom = $user['nom'] ?? '';
+$prenom = $user['prenom'] ?? '';
+$email = $user['email'] ?? '';
+
 ?>
 
 
@@ -14,7 +23,7 @@ ob_start();
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.627 48.627 0 0 1 12 20.904a48.627 48.627 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.57 50.57 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
             </svg>
             <div>
-                <h2 class="text-3xl font-bold">Bienvenue, <?= $_SESSION['nom'] . $_SESSION["prenom"]  ?> !</h2>
+                <h2 class="text-3xl font-bold">Bienvenue, <?= $nom . " " . $prenom ?> !</h2>
                 <p class="text-blue-200">Tableau de bord de gestion des sanctions scolaires</p>
             </div>
         </div>
@@ -41,7 +50,7 @@ ob_start();
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9" />
                 </svg>
-                <span>Déconnexion</span>
+                <a href="index.php?action=deconnexion"><span>Déconnexion</span></a>
             </button>
         </div>
     </div>
@@ -160,7 +169,7 @@ ob_start();
                         <div class="p-2 bg-gray-100 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-500">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                             </svg></div><span class="text-sm text-gray-500">Nom complet</span>
-                    </div><span class="text-sm font-medium text-gray-800">Dorian GOLBIN</span>
+                    </div><span class="text-sm font-medium text-gray-800"><?= $nom . " " . $prenom ?></span>
                 </div>
                 <div class="border-t border-gray-100 mx-4"></div>
                 <div class="flex items-center justify-between p-4">
@@ -168,7 +177,7 @@ ob_start();
                         <div class="p-2 bg-gray-100 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-500">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                             </svg></div><span class="text-sm text-gray-500">Email</span>
-                    </div><span class="text-sm font-medium text-gray-800">fl@test.fr</span>
+                    </div><span class="text-sm font-medium text-gray-800"><?= $email ?></span>
                 </div>
                 <div class="border-t border-gray-100 mx-4"></div>
                 <div class="flex items-center justify-between p-4">

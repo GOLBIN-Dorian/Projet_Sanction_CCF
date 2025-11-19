@@ -1,86 +1,75 @@
 <?php
 
-
-
-// Si l'utilisateur est déjà connecté, le rediriger vers le dashboard
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    header('Location: index.php?action=dashboard');
-    exit();
-}
-
-require_once __DIR__ . '/../Repositories/userRepository.php';
+// inclure la config BDD (chemin relatif depuis controllers vers src/config)
 require_once __DIR__ . '/../config/database.php';
+// <-- ajout : inclure le modèle utilisateur
+require_once __DIR__ . '/../repositories/userRepository.php';
 
-// Initialisation des variables
-$email = $password = "";
-$email_err = $password_err = $login_err = "";
-$errors = [];
+use App\Http\Request;
+use App\Http\Response;
 
-
-// Traitement du formulaire lors de la soumission
-
-if ($_SERVER["REQUEST_METHOD"] == 'POST') {
-
-    //validation de l'email
-    if (empty(trim($_POST['email']))) {
-        $errors["email"] = 'Veuillez entrer votre email';
-    } else {
-        $email = trim($_POST['email']);
+function action_connexion(Request $req, Response $res): void
+{
+    // Démarrer la session si nécessaire
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
     }
 
-    // Validation du mot de passe
-
-    if (empty(trim($_POST['password']))) {
-        $errors['password'] = 'Veuillez entrer votre mot de passe';
-    } else {
-        $password = trim($_POST['password']);
+    if (!empty($_SESSION['user']) || !empty($_SESSION['loggedin'])) {
+        $res->redirect('index.php?action=dashboard');
+        return;
     }
 
-    // Vérifier les erreurs avant de tenter la connexion
+    $errors = [];
+    $email = '';
 
-    if (empty($errors)) {
-        // Créer une connexion avec la BDD
+    if ($req->getMethod() === 'POST') {
 
-        $connexion = getDatabaseConnection();
+        $email    = trim($_POST['email'] ?? '');
+        $password = trim($_POST['password'] ?? '');
 
-        $utilisateur = getUserByEmail($connexion, $email);
-
-        if ($utilisateur) {
-            //Vérifier le mot de passe
-            if (password_verify($password, $utilisateur['password'])) {
-
-                // Le mot de passe est correct, démarrer une nouvelle session
-
-                // Stocker les données dans la session
-
-                $_SESSION['loggedin'] = true;
-                $_SESSION["id"] = $utilisateur['id'];
-                $_SESSION['email'] = $utilisateur['email'];
-                $_SESSION['nom'] = $utilisateur['nom'];
-                $_SESSION['prenom'] = $utilisateur['prenom'];
-
-                // Vérifier s'il y a une redirection prévue avant la connexion
-
-                if (isset($_POST['redirect']) && !empty($_POST['redirect'])) {
-                    header('Location: ' . $_GET['redirect']);
-                } else {
-                    // Rediriger vers le tableau de bord
-                    header('Location: /dashboard');
-                }
-                exit;
-            } else {
-                // Le mot de passe est incorrect
-                $errors["login"] = 'Email ou mot de passe invalide.';
-            }
-        } else {
-            // L'email n'existe pas
-            $errors["login"] = 'Email ou mot de passe invalide.';
+        if ($email === '') {
+            $errors['email'] = 'Veuillez entrer votre email';
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = 'Veuillez entrer une adresse email valide';
         }
 
-        //Fermer la connexion
+        if ($password === '') {
+            $errors['password'] = 'Veuillez entrer votre mot de passe';
+        }
 
-        unset($connexion);
+        if (empty($errors)) {
+            // Créer une connexion avec la BDD
+            $connexion = getDatabaseConnection();
+
+            if ($connexion === false) {
+                $errors['db'] = "Impossible de se connecter à la base de données. Vérifiez la configuration.";
+            } else {
+                $utilisateur = getUserByEmail($connexion, $email);
+
+                if ($utilisateur && password_verify($password, $utilisateur['password'])) {
+                    // Authentification réussie
+                    $_SESSION['loggedin'] = true;
+                    $_SESSION['user'] = [
+                        'id' => $utilisateur['id'],
+                        'email' => $utilisateur['email'],
+                        'nom' => $utilisateur['nom'],
+                        'prenom' => $utilisateur['prenom'],
+                    ];
+
+                    $res->redirect('index.php?action=dashboard');
+                    return;
+                }
+
+                // Identifiants incorrects (utilisateur absent ou mot de passe invalide)
+                $errors['login'] = 'Identifiants incorrects';
+            }
+        }
     }
-}
 
-include_once __DIR__ . '/../../templates/Gestions/connexion.php';
+    // Afficher la vue du formulaire (GET ou POST avec erreurs)
+    $res->view('Gestions/connexion.php', [
+        'errors' => $errors,
+        'email'  => $email
+    ]);
+}
