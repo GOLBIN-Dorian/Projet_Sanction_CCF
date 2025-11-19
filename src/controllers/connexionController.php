@@ -1,10 +1,10 @@
 <?php
 
-// Début de la session
+
 
 // Si l'utilisateur est déjà connecté, le rediriger vers le dashboard
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    header('Location: ');
+    header('Location: index.php?action=dashboard');
     exit();
 }
 
