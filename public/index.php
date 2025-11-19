@@ -39,7 +39,7 @@ try {
 
     function action_inscription(Request $req, Response $res)
     {
-        include __DIR__ . '/../src/controllers/inscription.php';
+        include __DIR__ . '/../src/controllers/inscriptionController.php';
     }
 
     function action_dashboard(Request $req, Response $res)
@@ -54,7 +54,6 @@ try {
         ->addRoute('inscription', 'action_inscription', ['GET', 'POST'])
         ->addRoute('dashboard', 'action_dashboard', ['GET']);
 
-    // Fallback: if action not found Router::handleRequest will redirect to index
     $router->handleRequest();
 } catch (Exception $e) {
     // Erreur fatale : renvoyer un simple message
