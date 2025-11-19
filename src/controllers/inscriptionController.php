@@ -6,6 +6,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     exit;
 }
 
+
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../Repositories/userRepository.php';
 
