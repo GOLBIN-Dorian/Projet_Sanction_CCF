@@ -108,3 +108,26 @@ htmlcov/
 *.zip
 *.tar.gz
 
+# Composer
+/vendor/
+/composer.lock
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+
+# Logs / cache
+logs/
+cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+/docker-data/
+/db-data/

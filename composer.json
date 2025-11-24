@@ -8,8 +8,7 @@
       "src/controllers/connexionController.php",
       "src/controllers/inscriptionController.php",
       "src/controllers/dashboardController.php",
-      "src/controllers/deconnexionController.php",
-      "src/config/database.php"
+      "src/controllers/deconnexionController.php"
     ]
   }
 }

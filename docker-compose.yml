@@ -6,13 +6,14 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: secret
+      MYSQL_ROOT_HOST: "%"
       MYSQL_DATABASE: db_sanctions
       MYSQL_USER: user
       MYSQL_PASSWORD: secret
     ports:
       - "3330:3306"
     volumes:
-      - sio:/var/lib/mysql
+      - sio-db:/var/lib/mysql
     networks:
       - sio
     healthcheck:
@@ -28,6 +29,8 @@ services:
       - db
     environment:
       PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: secret
       UPLOAD_LIMIT: 256M
     ports:
       - "8010:80"
@@ -35,7 +38,7 @@ services:
       - sio
 
 volumes:
-  sio:
+  sio-db:
 
 networks:
   sio:

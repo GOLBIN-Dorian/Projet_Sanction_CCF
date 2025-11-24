@@ -8,15 +8,17 @@
 // Configuration de la base de données
 define('DB_HOST', '127.0.0.1');
 define('DB_NAME', 'db_sanctions');
-define('DB_USER', 'user');
-define('DB_PASS', 'secret');
+define('DB_USER', 'root');      // <--- change ici
+define('DB_PASS', 'secret');    // <--- mot de passe root du docker-compose
 define('DB_PORT', '3330');
+
 
 /**
  * Établit une connexion à la base de données
  * @return PDO|false Retourne l'objet PDO ou false en cas d'erreur
  */
-function getDatabaseConnection() {
+function getDatabaseConnection()
+{
     // Lire depuis les variables d'environnement si présentes (utile en Docker)
     $host = getenv('DB_HOST') ?: DB_HOST;
     $port = getenv('DB_PORT') ?: DB_PORT;
@@ -38,7 +40,7 @@ function getDatabaseConnection() {
             ]);
             return $pdo;
         } catch (PDOException $e) {
-            error_log("Tentative de connexion #".($attempt+1)." échouée : " . $e->getMessage());
+            error_log("Tentative de connexion #" . ($attempt + 1) . " échouée : " . $e->getMessage());
             $attempt++;
             if ($attempt >= $maxAttempts) {
                 error_log("Erreur de connexion finale à la base de données : " . $e->getMessage());
