@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= htmlspecialchars($title ?? 'Gestion des Sanctions') ?></title>
-  <link rel="stylesheet" href="css/style.css">
+
+  <!-- 1. Charger Tailwind CDN en premier -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -37,20 +38,20 @@
     };
   </script>
 
+  <!-- 2. Puis ton CSS custom -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!-- 3. Styles additionnels -->
   <style>
     body {
-      background: #f5f7fb;
+      font-family: 'Inter', sans-serif;
+      background-color: #F8FAFC;
+      /* Gris très clair de fond */
     }
 
     :where(input, a, button, select, textarea):focus-visible {
       outline: 2px solid #2563eb;
       outline-offset: 2px;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #F8FAFC;
-      /* Gris très clair de fond */
     }
 
     /* Ajustements spécifiques pour coller exactement aux couleurs */
@@ -74,31 +75,77 @@
       color: #2563EB;
     }
   </style>
-  </style>
 </head>
+
 
 <body>
   <header class="bg-white border-b border-slate-200 mb-20">
+    <!-- Bandeau du haut : logo + nom appli -->
     <div class="mx-auto max-w-content px-5">
       <div class="h-16 flex items-center justify-between">
         <!-- Branding gauche -->
         <div class="flex items-center gap-2 text-primary-600 font-bold">
-          <div class="w-[22px] h-[22px] grid place-items-center border rounded-md text-[11px]">📋</div>
+          <div class="w-[22px] h-[22px] grid place-items-center border rounded-md text-[11px]">
+            📋
+          </div>
           <span>Gestion des Sanctions</span>
         </div>
         <!-- Nom d'appli à droite -->
         <div class="text-sm text-slate-500">Application Vie Scolaire</div>
       </div>
     </div>
-    <!-- Ruban / fil d'Ariane -->
-    <div class="bg-primary-800 text-primary-100">
-      <div class="mx-auto max-w-content px-5 py-2">
-        <a class="inline-flex items-center gap-2 rounded-md px-2.5 py-1 text-sm text-white" href="index.php?action=index">
-          <span>🏠</span> Accueil
-        </a>
+
+    <?php if (!empty($_SESSION['user'])): ?>
+      <!-- NAV COMPLET SI CONNECTÉ -->
+      <nav class="bg-primary-600 text-white text-sm">
+        <div class="mx-auto max-w-content px-5 h-10 flex items-center justify-between">
+          <!-- Menu de gauche -->
+          <div class="flex items-center gap-6">
+            <a href="index.php?action=dashboard" class="inline-flex items-center gap-2 font-semibold">
+              <span>🏠</span> <span>Tableau de Bord</span>
+            </a>
+            <a href="index.php?action=sanctions" class="inline-flex items-center gap-2">
+              <span>⚖️</span> <span>Sanctions</span>
+            </a>
+            <a href="index.php?action=eleves" class="inline-flex items-center gap-2">
+              <span>👥</span> <span>Élèves</span>
+            </a>
+            <a href="index.php?action=professeurs" class="inline-flex items-center gap-2">
+              <span>👨‍🏫</span> <span>Professeurs</span>
+            </a>
+            <a href="index.php?action=creationClasse" class="inline-flex items-center gap-2">
+              <span>📚</span> <span>Classes</span>
+            </a>
+            <a href="index.php?action=utilisateurs" class="inline-flex items-center gap-2">
+              <span>👤</span> <span>Utilisateurs</span>
+            </a>
+          </div>
+
+          <!-- Partie droite : bonjour + déconnexion -->
+          <div class="flex items-center gap-5">
+            <span class="text-sm">
+              Bonjour, <?= htmlspecialchars($_SESSION['user']['prenom']) ?>
+            </span>
+            <a href="index.php?action=deconnexion" class="inline-flex items-center gap-2 font-semibold">
+              <span>📕</span> <span>Déconnexion</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    <?php else: ?>
+      <!-- PETIT RUBAN SIMPLE SI NON CONNECTÉ -->
+      <div class="bg-primary-800 text-primary-100">
+        <div class="mx-auto max-w-content px-5 py-2">
+          <a
+            class="inline-flex items-center gap-2 rounded-md px-2.5 py-1 text-sm text-white"
+            href="index.php?action=index">
+            <span>🏠</span> Accueil
+          </a>
+        </div>
       </div>
-    </div>
+    <?php endif; ?>
   </header>
+
 
 
   <main>
