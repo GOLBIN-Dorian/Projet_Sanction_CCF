@@ -46,6 +46,34 @@
       outline: 2px solid #2563eb;
       outline-offset: 2px;
     }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F8FAFC;
+      /* Gris très clair de fond */
+    }
+
+    /* Ajustements spécifiques pour coller exactement aux couleurs */
+    .bg-primary-blue {
+      background-color: #2563EB;
+    }
+
+    .bg-primary-hover {
+      background-color: #1D4ED8;
+    }
+
+    .bg-nav-blue {
+      background-color: #2563EB;
+    }
+
+    .bg-footer-dark {
+      background-color: #1E293B;
+    }
+
+    .text-primary-blue {
+      color: #2563EB;
+    }
+  </style>
   </style>
 </head>
 

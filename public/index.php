@@ -18,7 +18,8 @@ try {
         ->addRoute('connexion',   'action_connexion',   ['GET', 'POST'])
         ->addRoute('inscription', 'action_inscription', ['GET', 'POST'])
         ->addRoute('dashboard',   'action_dashboard',   ['GET'])
-        ->addRoute('deconnexion', 'action_deconnexion', ['GET']);
+        ->addRoute('deconnexion', 'action_deconnexion', ['GET'])
+        ->addRoute('creationClasse', 'action_creationClasse', ['GET', 'POST']);
 
     $router->handleRequest();
 } catch (Exception $e) {

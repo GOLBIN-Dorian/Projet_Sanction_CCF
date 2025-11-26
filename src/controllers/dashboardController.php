@@ -6,7 +6,7 @@ use App\Http\Response;
 function action_dashboard(Request $req, Response $res): void
 {
     if (empty($_SESSION['user'])) {
-        $res->redirect('index.php?action=connexion');
+        $res->redirect('index.php?action=creationClasse');
         return;
     }
 
