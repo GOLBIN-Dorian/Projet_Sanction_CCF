@@ -12,4 +12,5 @@ return array(
     'e268ae21b57788fd392ac36d8c456dbb' => $baseDir . '/src/controllers/dashboardController.php',
     'ed2307c03117c4511571acf27f834b94' => $baseDir . '/src/controllers/deconnexionController.php',
     '3d9a5afb4b5bc85b680dc2657e2de105' => $baseDir . '/src/controllers/creationClasseController.php',
+    'd1163d13c581d1a85b3666a9beaf4217' => $baseDir . '/src/controllers/listeClasseController.php',
 );
